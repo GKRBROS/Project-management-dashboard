@@ -3,7 +3,12 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Sidebar from './components/Sidebar';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: 'Project Management Dashboard',
@@ -16,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={inter.variable}>
+      <body className={`${inter.className} antialiased`}>
         <div className="flex min-h-screen bg-gray-50">
           <Sidebar />
           <div className="flex-1">
