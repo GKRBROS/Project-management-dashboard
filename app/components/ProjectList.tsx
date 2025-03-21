@@ -14,7 +14,8 @@ const StatusBadge = ({ status }: { status: Project['status'] }) => {
     'Pending': 'bg-red-100 text-red-800',
     'In progress': 'bg-yellow-100 text-yellow-800',
     'Cancelled': 'bg-red-100 text-red-800',
-  };
+    'Admin Approved': 'bg-blue-100 text-blue-800',
+  } as const;
 
   return (
     <span className={`px-2 py-0.5 rounded-full text-xs ${statusColors[status]}`}>
