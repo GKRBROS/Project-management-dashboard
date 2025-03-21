@@ -7,24 +7,22 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Project Management Dashboard',
-  description: 'ZedeXeL Front End Dashboard Challenge',
+  description: 'A modern project management dashboard for managing exhibition and event projects.',
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen bg-gray-50">
           <Sidebar />
-          <main className="flex-1 bg-gray-50">
-            <div className="p-8">
-              {children}
-            </div>
-          </main>
+          <div className="flex-1">
+            {children}
+          </div>
         </div>
       </body>
     </html>
