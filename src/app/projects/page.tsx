@@ -1,8 +1,7 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 
 interface Project {
@@ -13,10 +12,10 @@ interface Project {
   status: 'active' | 'completed' | 'upcoming';
   venue: string;
   totalArea: string;
-  clientLogo: string;
-  images: string[];
+  logo: string;
 }
 
+// Mock data
 const mockProjects: Project[] = [
   {
     id: '1',
@@ -26,102 +25,121 @@ const mockProjects: Project[] = [
     status: 'completed',
     venue: 'Convention Center',
     totalArea: '100 sqm',
-    clientLogo: '/images/skyline-logo.png',
-    images: ['/images/stand1.jpg', '/images/stand2.jpg', '/images/stand3.jpg']
+    logo: '/images/skyline-logo.png'
   },
   // ... other projects
 ];
 
-function ProjectsList() {
+function ProjectList() {
   const searchParams = useSearchParams();
-  const query = searchParams.get('q') || '';
-  const status = searchParams.get('status') || 'all';
-  const currentPage = Number(searchParams.get('page')) || 1;
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const filteredProjects = mockProjects.filter(project => {
-    const matchesQuery = project.name.toLowerCase().includes(query.toLowerCase());
-    const matchesStatus = status === 'all' || project.status === status;
-    return matchesQuery && matchesStatus;
-  });
+  const searchQuery = searchParams.get('search') || '';
+  const filteredProjects = mockProjects.filter(project =>
+    project.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProjects = filteredProjects.slice(startIndex, startIndex + itemsPerPage);
+  const endIndex = startIndex + itemsPerPage;
+  const currentProjects = filteredProjects.slice(startIndex, endIndex);
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    if (startPage > 1) {
+      pages.push(1);
+      if (startPage > 2) pages.push('...');
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) pages.push('...');
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-bold text-gray-900">Projects</h2>
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+      {/* Search Bar */}
+      <div className="flex items-center gap-4">
+        <div className="flex-1">
           <input
             type="text"
             placeholder="Search projects..."
-            className="px-4 py-2 border rounded-md w-full sm:w-64"
-            value={query}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={searchQuery}
             onChange={(e) => {
               const params = new URLSearchParams(searchParams.toString());
-              params.set('q', e.target.value);
-              params.set('page', '1');
-              window.history.pushState(null, '', `?${params.toString()}`);
+              params.set('search', e.target.value);
+              window.history.pushState({}, '', `?${params.toString()}`);
             }}
           />
-          <select
-            className="px-4 py-2 border rounded-md w-full sm:w-48"
-            value={status}
-            onChange={(e) => {
-              const params = new URLSearchParams(searchParams.toString());
-              params.set('status', e.target.value);
-              params.set('page', '1');
-              window.history.pushState(null, '', `?${params.toString()}`);
-            }}
-          >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
-            <option value="upcoming">Upcoming</option>
-          </select>
         </div>
+        <Link
+          href="/projects/new"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        >
+          New Project
+        </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      {/* Projects Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentProjects.map((project) => (
           <Link
             key={project.id}
             href={`/projects/${project.id}`}
-            className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+            className="block bg-white rounded-lg shadow hover:shadow-md transition-shadow"
           >
-            <div className="flex flex-col h-full">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={project.clientLogo}
-                    alt="Company Logo"
-                    width={40}
-                    height={40}
-                    className="object-contain"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-gray-900 line-clamp-2">{project.name}</h3>
-                    <p className="text-sm text-gray-500">{project.venue}</p>
-                  </div>
+            <div className="p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <img
+                  src={project.logo}
+                  alt="Company Logo"
+                  className="w-12 h-12 object-contain"
+                />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+                    {project.name}
+                  </h3>
+                  <p className="text-sm text-gray-500">{project.venue}</p>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  project.status === 'active' ? 'bg-green-100 text-green-800' :
-                  project.status === 'completed' ? 'bg-blue-100 text-blue-800' :
-                  'bg-yellow-100 text-yellow-800'
-                }`}>
-                  {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
-                </span>
               </div>
-              <div className="space-y-2 mt-auto">
+              <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Area:</span>
-                  <span className="font-medium">{project.totalArea}</span>
+                  <span className="text-gray-500">Start Date:</span>
+                  <span className="text-gray-900">{project.startDate}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Date:</span>
-                  <span className="font-medium">{project.startDate} - {project.endDate}</span>
+                  <span className="text-gray-500">End Date:</span>
+                  <span className="text-gray-900">{project.endDate}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Total Area:</span>
+                  <span className="text-gray-900">{project.totalArea}</span>
+                </div>
+                <div className="flex justify-between items-center mt-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    project.status === 'active' ? 'bg-green-100 text-green-800' :
+                    project.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                    'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -129,24 +147,80 @@ function ProjectsList() {
         ))}
       </div>
 
+      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-8">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <Link
-              key={page}
-              href={`?${new URLSearchParams({
-                ...Object.fromEntries(searchParams.entries()),
-                page: page.toString()
-              }).toString()}`}
-              className={`px-4 py-2 rounded-md ${
-                page === currentPage
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+          <div className="flex flex-1 justify-between sm:hidden">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
             >
-              {page}
-            </Link>
-          ))}
+              Previous
+            </button>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm text-gray-700">
+                Showing <span className="font-medium">{startIndex + 1}</span> to{' '}
+                <span className="font-medium">{Math.min(endIndex, filteredProjects.length)}</span> of{' '}
+                <span className="font-medium">{filteredProjects.length}</span> results
+              </p>
+            </div>
+            <div>
+              <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50"
+                >
+                  <span className="sr-only">Previous</span>
+                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                {getPageNumbers().map((page, index) => (
+                  page === '...' ? (
+                    <span
+                      key={`ellipsis-${index}`}
+                      className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
+                    >
+                      ...
+                    </span>
+                  ) : (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(Number(page))}
+                      className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
+                        currentPage === page
+                          ? 'z-10 bg-indigo-600 text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                          : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  )
+                ))}
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50"
+                >
+                  <span className="sr-only">Next</span>
+                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </nav>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -155,9 +229,12 @@ function ProjectsList() {
 
 export default function ProjectsPage() {
   return (
-    <div className="p-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
+      </div>
       <Suspense fallback={<div>Loading projects...</div>}>
-        <ProjectsList />
+        <ProjectList />
       </Suspense>
     </div>
   );
