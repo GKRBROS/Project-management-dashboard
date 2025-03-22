@@ -71,30 +71,11 @@ export default function ProjectDetailsPage() {
               </Link>
             </div>
 
-            {/* Project title and actions */}
+            {/* Project title */}
             <div className="py-3 md:py-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 line-clamp-2 sm:line-clamp-1 max-w-2xl">
-                  {mockProject.name}
-                </h1>
-                <div className="flex items-center gap-2">
-                  <button
-                    className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    <svg className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    Sync
-                  </button>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    mockProject.status === 'active' ? 'bg-green-100 text-green-800' :
-                    mockProject.status === 'completed' ? 'bg-blue-100 text-blue-800' :
-                    'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {mockProject.status.charAt(0).toUpperCase() + mockProject.status.slice(1)}
-                  </span>
-                </div>
-              </div>
+              <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 line-clamp-2 sm:line-clamp-1 max-w-3xl">
+                {mockProject.name}
+              </h1>
             </div>
           </div>
         </div>
@@ -140,10 +121,31 @@ export default function ProjectDetailsPage() {
                         className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover bg-gray-50"
                       />
                       <div className="mt-4 sm:mt-0 flex-1 min-w-0">
-                        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 pr-4">
-                          {mockProject.name}
-                        </h2>
-                        <p className="text-sm text-gray-500">{mockProject.venue}</p>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                          <div>
+                            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                              {mockProject.name}
+                            </h2>
+                            <p className="text-sm text-gray-500">{mockProject.venue}</p>
+                          </div>
+                          <div className="flex items-center gap-2 mt-2 sm:mt-0">
+                            <button
+                              className="inline-flex items-center px-2 py-1 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                              <svg className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                              </svg>
+                              Sync
+                            </button>
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              mockProject.status === 'active' ? 'bg-green-100 text-green-800' :
+                              mockProject.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                              'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {mockProject.status.charAt(0).toUpperCase() + mockProject.status.slice(1)}
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-y-6 gap-x-8">
