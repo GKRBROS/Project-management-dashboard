@@ -1,58 +1,39 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 interface SearchBarProps {
-  placeholder?: string;
+  initialValue?: string;
+  onSearch: (query: string) => void;
 }
 
-export default function SearchBar({ placeholder = 'Search projects...' }: SearchBarProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+export default function SearchBar({ initialValue = '', onSearch }: SearchBarProps) {
+  const [searchQuery, setSearchQuery] = useState(initialValue);
 
   useEffect(() => {
-    const query = searchParams.get('q');
-    if (query !== searchQuery) {
-      setSearchQuery(query || '');
-    }
-  }, [searchParams]);
+    setSearchQuery(initialValue);
+  }, [initialValue]);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const params = new URLSearchParams(searchParams.toString());
-    if (searchQuery) {
-      params.set('q', searchQuery);
-    } else {
-      params.delete('q');
-    }
-    params.delete('page'); // Reset to first page on new search
-    router.push(`/projects?${params.toString()}`);
+    onSearch(searchQuery);
   };
 
   return (
-    <form onSubmit={handleSearch} className="relative w-full">
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder={placeholder}
-        className="w-full pl-10 pr-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <svg
-        className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+        </div>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="block w-full bg-white border border-gray-300 rounded-lg py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-base"
+          placeholder="Search projects..."
         />
-      </svg>
+      </div>
     </form>
   );
 } 

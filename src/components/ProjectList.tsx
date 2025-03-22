@@ -1,7 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { Project } from '@/types/project';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProjectListProps {
   projects: Project[];
@@ -9,61 +10,66 @@ interface ProjectListProps {
 
 export default function ProjectList({ projects }: ProjectListProps) {
   return (
-    <table className="min-w-full divide-y divide-gray-200">
-      <thead className="bg-gray-50">
-        <tr>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Project
-          </th>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Venue
-          </th>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Dates
-          </th>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Status
-          </th>
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        {projects.map((project) => (
-          <tr key={project.id} className="hover:bg-gray-50">
-            <td className="px-6 py-4 whitespace-nowrap">
-              <Link href={`/projects/${project.id}`} className="group">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 h-10 w-10">
-                    <img className="h-10 w-10 rounded-full object-cover" src={project.logo} alt="" />
-                  </div>
-                  <div className="ml-4">
-                    <div className="text-sm font-medium text-gray-900 group-hover:text-blue-600">
-                      {project.name}
-                    </div>
-                  </div>
+    <div className="min-w-full divide-y divide-gray-200">
+      {projects.map((project) => (
+        <Link
+          key={project.id}
+          href={`/projects/${project.id}`}
+          className="block hover:bg-gray-50 transition-colors duration-200"
+        >
+          <div className="px-4 sm:px-6 py-4 sm:py-6 flex items-center gap-4 sm:gap-6">
+            <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
+              <Image
+                src={project.logo}
+                alt={`${project.name} logo`}
+                fill
+                className="object-contain"
+              />
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <h2 className="text-sm sm:text-base font-medium text-gray-900 truncate">
+                  {project.name}
+                </h2>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  {project.status}
+                </span>
+              </div>
+              
+              <div className="mt-1 sm:mt-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-sm text-gray-500">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Venue:</span>
+                  {project.venue.name}, {project.venue.city}, {project.venue.country}
                 </div>
-              </Link>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <div className="text-sm text-gray-900">{project.venue.name}</div>
-              <div className="text-sm text-gray-500">{project.venue.city}, {project.venue.country}</div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <div className="text-sm text-gray-900">{project.startDate}</div>
-              <div className="text-sm text-gray-500">{project.endDate}</div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                project.status === 'Design Submitted' ? 'bg-yellow-100 text-yellow-800' :
-                project.status === 'Project Confirmed' ? 'bg-green-100 text-green-800' :
-                project.status === 'Admin Approved' ? 'bg-blue-100 text-blue-800' :
-                'bg-gray-100 text-gray-800'
-              }`}>
-                {project.status}
-              </span>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Hall:</span>
+                  {project.venue.hallNumber}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Stand:</span>
+                  {project.venue.standNumber}
+                </div>
+              </div>
+              
+              <div className="mt-1 sm:mt-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-sm text-gray-500">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Start:</span>
+                  {new Date(project.startDate).toLocaleDateString()}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">End:</span>
+                  {new Date(project.endDate).toLocaleDateString()}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Area:</span>
+                  {project.totalArea}m²
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
+      ))}
+    </div>
   );
 } 
