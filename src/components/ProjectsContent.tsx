@@ -100,7 +100,7 @@ function ProjectsContentInner() {
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-8 mb-6 sm:mb-8">
         <h1 className="text-xl sm:text-2xl font-semibold">Projects</h1>
         <div className="w-full sm:w-auto">
-          <SearchBar initialValue={searchQuery} onSearch={handleSearch} />
+          <SearchBar value={searchQuery} onChange={handleSearch} />
         </div>
       </div>
       

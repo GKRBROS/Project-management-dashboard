@@ -15,13 +15,14 @@ export const projects: Project[] = [
       standNumber: '10'
     },
     totalArea: '1200 sq. mtr',
-    logo: '/images/projects/placeholder.svg',
+    logo: '/images/skyline-logo.png',
     images: [
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg'
+      '/images/stand1.png',
+      '/images/stand2.png',
+      '/images/stand3.png',
+      '/images/stand4.png',
+      '/images/stand5.png',
+      '/images/stand6.png'
     ]
   },
   {
@@ -38,13 +39,14 @@ export const projects: Project[] = [
       standNumber: '25'
     },
     totalArea: '800 sq. mtr',
-    logo: '/images/projects/placeholder.svg',
+    logo: '/images/skyline-logo.png',
     images: [
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg'
+      '/images/stand1.png',
+      '/images/stand2.png',
+      '/images/stand3.png',
+      '/images/stand4.png',
+      '/images/stand5.png',
+      '/images/stand6.png'
     ]
   },
   {
@@ -61,13 +63,14 @@ export const projects: Project[] = [
       standNumber: '42'
     },
     totalArea: '1500 sq. mtr',
-    logo: '/images/projects/placeholder.svg',
+    logo: '/images/skyline-logo.png',
     images: [
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg'
+      '/images/stand1.png',
+      '/images/stand2.png',
+      '/images/stand3.png',
+      '/images/stand4.png',
+      '/images/stand5.png',
+      '/images/stand6.png'
     ]
   },
   {
@@ -84,13 +87,14 @@ export const projects: Project[] = [
       standNumber: '15'
     },
     totalArea: '600 sq. mtr',
-    logo: '/images/projects/placeholder.svg',
+    logo: '/images/skyline-logo.png',
     images: [
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg'
+      '/images/stand1.png',
+      '/images/stand2.png',
+      '/images/stand3.png',
+      '/images/stand4.png',
+      '/images/stand5.png',
+      '/images/stand6.png'
     ]
   },
   {
@@ -107,13 +111,14 @@ export const projects: Project[] = [
       standNumber: '30'
     },
     totalArea: '1000 sq. mtr',
-    logo: '/images/projects/placeholder.svg',
+    logo: '/images/skyline-logo.png',
     images: [
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg',
-      '/images/projects/placeholder.svg'
+      '/images/stand1.png',
+      '/images/stand2.png',
+      '/images/stand3.png',
+      '/images/stand4.png',
+      '/images/stand5.png',
+      '/images/stand6.png'
     ]
   }
 ]; 
