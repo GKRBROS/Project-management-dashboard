@@ -14,7 +14,7 @@ const mockProjects: Project[] = [
     name: 'Skyline Industries stand at Industry Showcase 2023',
     startDate: '2023-06-15',
     endDate: '2023-06-20',
-    status: 'Design Submitted',
+    status: 'In Progress',
     venue: {
       name: 'Convention Center',
       city: 'Dubai',
@@ -22,7 +22,7 @@ const mockProjects: Project[] = [
       hallNumber: '01',
       standNumber: '10'
     },
-    totalArea: 100,
+    totalArea: '100 sq. mtr',
     logo: '/images/skyline-logo.png',
     images: ['/images/stand1.png', '/images/stand2.png', '/images/stand3.png']
   },
