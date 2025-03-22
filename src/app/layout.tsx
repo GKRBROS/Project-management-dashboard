@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Sidebar from '../components/Sidebar';
+import Sidebar from "@/components/Sidebar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,23 +11,23 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Project Management Dashboard",
-  description: "A modern project management dashboard for managing exhibition and event projects.",
+  title: "Project Manager",
+  description: "A modern project management dashboard built with Next.js",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className={`${inter.className} antialiased`}>
-        <div className="flex min-h-screen bg-gray-50">
+      <body className="font-sans antialiased">
+        <div className="flex h-screen bg-gray-50">
           <Sidebar />
-          <div className="flex-1">
+          <main className="flex-1 overflow-y-auto">
             {children}
-          </div>
+          </main>
         </div>
       </body>
     </html>
