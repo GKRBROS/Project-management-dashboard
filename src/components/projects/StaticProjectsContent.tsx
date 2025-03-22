@@ -4,29 +4,7 @@ import { useState } from 'react';
 import ProjectList from '../ProjectList';
 import SearchBar from '../SearchBar';
 import { searchProjects } from '@/utils/search';
-import { Project } from '@/types/project';
-
-// Mock data
-const mockProjects: Project[] = [
-  {
-    id: '1',
-    name: 'Skyline Industries stand at Industry Showcase 2023',
-    startDate: '2023-06-15',
-    endDate: '2023-06-20',
-    status: 'Design Submitted',
-    venue: {
-      name: 'Convention Center',
-      city: 'Dubai',
-      country: 'UAE',
-      hallNumber: '01',
-      standNumber: '10'
-    },
-    totalArea: 100,
-    logo: '/images/skyline-logo.png',
-    images: ['/images/stand1.png', '/images/stand2.png', '/images/stand3.png']
-  },
-  // Add more mock projects here if needed
-];
+import { projects } from '@/data/projects';
 
 export default function StaticProjectsContent() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -42,7 +20,7 @@ export default function StaticProjectsContent() {
     setCurrentPage(page);
   };
 
-  const filteredProjects = searchProjects(mockProjects, searchQuery);
+  const filteredProjects = searchProjects(projects, searchQuery);
   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
   
   const startIndex = (currentPage - 1) * itemsPerPage;

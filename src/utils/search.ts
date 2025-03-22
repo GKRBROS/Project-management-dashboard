@@ -1,18 +1,19 @@
 import { Project } from '@/types/project';
 
-export const searchProjects = (projects: Project[], searchQuery: string): Project[] => {
-  if (!searchQuery) return projects;
+export function searchProjects(projects: Project[], query: string): Project[] {
+  if (!query.trim()) {
+    return projects;
+  }
 
-  const query = searchQuery.toLowerCase();
-  return projects.filter((project) => {
+  const searchTerm = query.toLowerCase().trim();
+  
+  return projects.filter(project => {
     return (
-      project.name.toLowerCase().includes(query) ||
-      project.venue.name.toLowerCase().includes(query) ||
-      project.venue.city.toLowerCase().includes(query) ||
-      project.venue.country.toLowerCase().includes(query) ||
-      project.venue.hallNumber.toLowerCase().includes(query) ||
-      project.venue.standNumber.toLowerCase().includes(query) ||
-      project.status.toLowerCase().includes(query)
+      project.name.toLowerCase().includes(searchTerm) ||
+      project.venue.name.toLowerCase().includes(searchTerm) ||
+      project.venue.city.toLowerCase().includes(searchTerm) ||
+      project.venue.country.toLowerCase().includes(searchTerm) ||
+      project.status.toLowerCase().includes(searchTerm)
     );
   });
-}; 
+} 

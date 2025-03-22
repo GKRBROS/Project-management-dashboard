@@ -11,9 +11,9 @@ export interface Project {
   name: string;
   startDate: string;
   endDate: string;
-  status: string;
+  status: 'Completed' | 'In Progress' | 'Planning';
   venue: Venue;
-  totalArea: number;
+  totalArea: string;
   logo: string;
   images: string[];
 } 

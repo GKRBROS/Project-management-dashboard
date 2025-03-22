@@ -2,54 +2,38 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { projects } from '@/data/projects';
 import Sidebar from '@/components/Sidebar';
 
-interface Project {
-  id: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-  status: 'active' | 'completed' | 'upcoming';
-  venue: string;
-  totalArea: string;
-  logo: string;
-  images: string[];
-  client: {
-    name: string;
-    logo: string;
-    contact: string;
-    email: string;
+interface ProjectPageProps {
+  params: {
+    id: string;
   };
 }
 
-// Mock data
-const mockProject: Project = {
-  id: '1',
-  name: 'Skyline Industries stand at Industry Showcase 2023',
-  startDate: '2023-02-18',
-  endDate: '2023-02-28',
-  status: 'completed',
-  venue: 'Innovation Hub D',
-  totalArea: '1200 sq. mtr',
-  logo: '/images/skyline-logo.png',
-  images: [
-    '/images/stand1.png',
-    '/images/stand2.png',
-    '/images/stand3.png',
-    '/images/stand4.png',
-    '/images/stand5.png',
-    '/images/stand6.png'
-  ],
-  client: {
-    name: 'Skyline Industries',
-    logo: '/images/skyline-logo.png',
-    contact: '+1 (555) 123-4567',
-    email: 'contact@skyline.com'
-  }
-};
-
-export default function ProjectDetailsPage() {
+export default function ProjectDetailsPage({ params }: ProjectPageProps) {
   const [selectedImage, setSelectedImage] = useState(0);
+  const project = projects.find(p => p.id === params.id);
+
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Sidebar />
+        <div className="lg:pl-64">
+          <div className="px-4 sm:px-6 lg:px-8 py-8">
+            <div className="text-center">
+              <h1 className="text-2xl font-semibold text-gray-900">Project not found</h1>
+              <p className="mt-2 text-gray-500">The project you're looking for doesn't exist.</p>
+              <Link href="/projects" className="mt-4 inline-block text-blue-600 hover:text-blue-800">
+                Back to Projects
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -74,7 +58,7 @@ export default function ProjectDetailsPage() {
             {/* Project title */}
             <div className="py-3 md:py-4">
               <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 line-clamp-2 sm:line-clamp-1 max-w-3xl">
-                {mockProject.name}
+                {project.name}
               </h1>
             </div>
           </div>
@@ -115,18 +99,21 @@ export default function ProjectDetailsPage() {
                 <div className="bg-white rounded-lg shadow-sm mb-8">
                   <div className="p-6">
                     <div className="flex flex-col sm:flex-row items-start gap-6 mb-8">
-                      <img
-                        src={mockProject.logo}
-                        alt="Project Logo"
-                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover bg-gray-50"
-                      />
+                      <div className="relative w-20 h-20 sm:w-24 sm:h-24">
+                        <Image
+                          src={project.logo}
+                          alt="Project Logo"
+                          fill
+                          className="rounded-full object-cover bg-gray-50"
+                        />
+                      </div>
                       <div className="mt-4 sm:mt-0 flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                           <div>
                             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                              {mockProject.name}
+                              {project.name}
                             </h2>
-                            <p className="text-sm text-gray-500">{mockProject.venue}</p>
+                            <p className="text-sm text-gray-500">{project.venue.name}</p>
                           </div>
                           <div className="flex items-center gap-2 mt-2 sm:mt-0">
                             <button
@@ -138,11 +125,12 @@ export default function ProjectDetailsPage() {
                               Sync
                             </button>
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              mockProject.status === 'active' ? 'bg-green-100 text-green-800' :
-                              mockProject.status === 'completed' ? 'bg-blue-100 text-blue-800' :
-                              'bg-yellow-100 text-yellow-800'
+                              project.status === 'Completed' ? 'bg-green-100 text-green-800' :
+                              project.status === 'In Progress' ? 'bg-blue-100 text-blue-800' :
+                              project.status === 'Planning' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-gray-100 text-gray-800'
                             }`}>
-                              {mockProject.status.charAt(0).toUpperCase() + mockProject.status.slice(1)}
+                              {project.status}
                             </span>
                           </div>
                         </div>
@@ -151,35 +139,35 @@ export default function ProjectDetailsPage() {
                     <div className="grid grid-cols-2 gap-y-6 gap-x-8">
                       <div>
                         <dt className="text-sm font-medium text-gray-500">Start date</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{mockProject.startDate}</dd>
+                        <dd className="mt-1 text-sm text-gray-900">{new Date(project.startDate).toLocaleDateString()}</dd>
                       </div>
                       <div>
                         <dt className="text-sm font-medium text-gray-500">End date</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{mockProject.endDate}</dd>
+                        <dd className="mt-1 text-sm text-gray-900">{new Date(project.endDate).toLocaleDateString()}</dd>
                       </div>
                       <div>
                         <dt className="text-sm font-medium text-gray-500">Venue name</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{mockProject.venue}</dd>
+                        <dd className="mt-1 text-sm text-gray-900">{project.venue.name}</dd>
                       </div>
                       <div>
                         <dt className="text-sm font-medium text-gray-500">Venue city</dt>
-                        <dd className="mt-1 text-sm text-gray-900">Dubai</dd>
+                        <dd className="mt-1 text-sm text-gray-900">{project.venue.city}</dd>
                       </div>
                       <div>
                         <dt className="text-sm font-medium text-gray-500">Venue hall number</dt>
-                        <dd className="mt-1 text-sm text-gray-900">01</dd>
+                        <dd className="mt-1 text-sm text-gray-900">{project.venue.hallNumber}</dd>
                       </div>
                       <div>
                         <dt className="text-sm font-medium text-gray-500">Venue stand number</dt>
-                        <dd className="mt-1 text-sm text-gray-900">10</dd>
+                        <dd className="mt-1 text-sm text-gray-900">{project.venue.standNumber}</dd>
                       </div>
                       <div>
                         <dt className="text-sm font-medium text-gray-500">Total sq. mtr</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{mockProject.totalArea}</dd>
+                        <dd className="mt-1 text-sm text-gray-900">{project.totalArea}</dd>
                       </div>
                       <div>
                         <dt className="text-sm font-medium text-gray-500">Venue country</dt>
-                        <dd className="mt-1 text-sm text-gray-900">UAE</dd>
+                        <dd className="mt-1 text-sm text-gray-900">{project.venue.country}</dd>
                       </div>
                     </div>
                   </div>
@@ -190,14 +178,16 @@ export default function ProjectDetailsPage() {
                   <div className="p-6">
                     <h3 className="text-lg font-medium text-gray-900 mb-6">Stand Designs</h3>
                     <div className="aspect-w-16 aspect-h-9 mb-6">
-                      <img
-                        src={mockProject.images[selectedImage]}
+                      <Image
+                        src={project.images[selectedImage]}
                         alt={`Stand Design ${selectedImage + 1}`}
+                        width={800}
+                        height={450}
                         className="w-full h-full object-cover rounded-lg"
                       />
                     </div>
                     <div className="grid grid-cols-5 gap-4">
-                      {mockProject.images.map((image, index) => (
+                      {project.images.map((image, index) => (
                         <button
                           key={index}
                           onClick={() => setSelectedImage(index)}
@@ -205,10 +195,11 @@ export default function ProjectDetailsPage() {
                             selectedImage === index ? 'ring-2 ring-indigo-500' : ''
                           }`}
                         >
-                          <img
+                          <Image
                             src={image}
                             alt={`Thumbnail ${index + 1}`}
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
                           />
                         </button>
                       ))}
@@ -222,23 +213,26 @@ export default function ProjectDetailsPage() {
                 <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Client Information</h3>
                   <div className="flex items-center gap-4 mb-6">
-                    <img
-                      src={mockProject.client.logo}
-                      alt="Client Logo"
-                      className="w-12 h-12 object-contain"
-                    />
+                    <div className="relative w-12 h-12">
+                      <Image
+                        src={project.logo}
+                        alt="Client Logo"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
                     <div>
-                      <h4 className="font-medium text-gray-900">{mockProject.client.name}</h4>
+                      <h4 className="font-medium text-gray-900">{project.name.split(' ')[0]}</h4>
                     </div>
                   </div>
                   <div className="space-y-4">
                     <div>
                       <h4 className="text-sm font-medium text-gray-500">Contact</h4>
-                      <p className="mt-1 text-sm text-gray-900">{mockProject.client.contact}</p>
+                      <p className="mt-1 text-sm text-gray-900">+1 (555) 123-4567</p>
                     </div>
                     <div>
                       <h4 className="text-sm font-medium text-gray-500">Email</h4>
-                      <p className="mt-1 text-sm text-gray-900">{mockProject.client.email}</p>
+                      <p className="mt-1 text-sm text-gray-900">contact@example.com</p>
                     </div>
                   </div>
                 </div>
