@@ -8,68 +8,87 @@ interface ProjectListProps {
   projects: Project[];
 }
 
+const getStatusStyle = (status: string) => {
+  switch (status) {
+    case 'Design Submitted':
+      return 'bg-green-50 text-green-600';
+    case 'Project Confirmed':
+      return 'bg-yellow-50 text-yellow-600';
+    case 'Pending':
+      return 'bg-red-50 text-red-600';
+    case 'In progress':
+      return 'bg-yellow-50 text-yellow-600';
+    case 'Cancelled':
+      return 'bg-red-50 text-red-600';
+    default:
+      return 'bg-gray-50 text-gray-600';
+  }
+};
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+};
+
 export default function ProjectList({ projects }: ProjectListProps) {
   return (
-    <div className="min-w-full divide-y divide-gray-200">
-      {projects.map((project) => (
-        <Link
-          key={project.id}
-          href={`/projects/${project.id}`}
-          className="block hover:bg-gray-50 transition-colors duration-200"
-        >
-          <div className="px-4 sm:px-6 py-4 sm:py-6 flex items-center gap-4 sm:gap-6">
-            <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
-              <Image
-                src={project.logo}
-                alt={`${project.name} logo`}
-                fill
-                className="object-contain"
-              />
-            </div>
-            
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <h2 className="text-sm sm:text-base font-medium text-gray-900 truncate">
+    <div className="bg-white rounded-lg">
+      <div className="min-w-full">
+        <div className="grid grid-cols-5 bg-gray-50 border-b border-gray-200">
+          <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Name
+          </div>
+          <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Start date
+          </div>
+          <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            End date
+          </div>
+          <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Status
+          </div>
+          <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Venue
+          </div>
+        </div>
+
+        <div className="bg-white">
+          {projects.map((project) => (
+            <Link 
+              key={project.id} 
+              href={`/projects/${project.id}`}
+              className="grid grid-cols-5 hover:bg-gray-50 border-b border-gray-200 transition-colors duration-150"
+            >
+              <div className="px-6 py-4">
+                <div className="text-sm text-gray-900">
                   {project.name}
-                </h2>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                </div>
+              </div>
+              <div className="px-6 py-4 text-sm text-gray-500">
+                {formatDate(project.startDate)}
+              </div>
+              <div className="px-6 py-4 text-sm text-gray-500">
+                {formatDate(project.endDate)}
+              </div>
+              <div className="px-6 py-4">
+                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusStyle(project.status)}`}>
                   {project.status}
                 </span>
               </div>
-              
-              <div className="mt-1 sm:mt-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-sm text-gray-500">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">Venue:</span>
-                  {project.venue.name}, {project.venue.city}, {project.venue.country}
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">Hall:</span>
-                  {project.venue.hallNumber}
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">Stand:</span>
-                  {project.venue.standNumber}
+              <div className="px-6 py-4">
+                <div className="text-sm text-gray-900">{project.venue.name}</div>
+                <div className="text-xs text-gray-500">
+                  Hall {project.venue.hallNumber}, Stand {project.venue.standNumber}
                 </div>
               </div>
-              
-              <div className="mt-1 sm:mt-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-sm text-gray-500">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">Start:</span>
-                  {new Date(project.startDate).toLocaleDateString()}
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">End:</span>
-                  {new Date(project.endDate).toLocaleDateString()}
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">Area:</span>
-                  {project.totalArea}m²
-                </div>
-              </div>
-            </div>
-          </div>
-        </Link>
-      ))}
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 } 
