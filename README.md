@@ -1,102 +1,119 @@
 # Project Management Dashboard
 
-A modern, responsive project management dashboard built with Next.js 14, TypeScript, and Tailwind CSS. This application helps manage exhibition and event projects with features like project tracking, status management, and detailed project views.
+A modern, responsive project management dashboard built with Next.js 14, TypeScript, and Tailwind CSS. This application helps teams manage and track various projects, contractors, and users efficiently.
 
 ## Features
 
-- 🎨 Modern and responsive UI design
-- 📱 Mobile-first approach with collapsible sidebar
-- 🔍 Advanced search functionality
-- 📊 Project status tracking with visual indicators
-- 📅 Date and venue management
-- 🖼️ Image gallery for project stands
-- 📱 Responsive design for all devices
-- 🎯 Pagination for better performance
-- 🔒 Type-safe development with TypeScript
+- 📊 **Project Overview**: View and manage all projects in a clean, organized interface
+- 🔍 **Search Functionality**: Easily search through projects by name, location, or status
+- 📱 **Responsive Design**: Fully responsive layout that works on all devices
+- 🎨 **Modern UI**: Clean and intuitive user interface with Tailwind CSS
+- 📅 **Project Details**: Comprehensive project information including dates, status, and venue details
+- 🔄 **Real-time Updates**: Dynamic status updates and filtering
+- 📊 **Pagination**: Efficient handling of large project lists
+- 🔒 **Type Safety**: Full TypeScript support for better development experience
 
 ## Tech Stack
 
-- **Framework:** Next.js 14
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **Deployment:** Vercel
-- **Version Control:** Git/GitHub
-
-## Prerequisites
-
-- Node.js 18.x or later
-- npm or yarn package manager
-- Git
+- **Framework**: Next.js 14
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: React Hooks
+- **Icons**: Heroicons
+- **Date Handling**: Native JavaScript Date API
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js >= 20.17.0
+- npm or yarn
+
+### Installation
+
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/project-management-dashboard.git
-cd project-management-dashboard
+git clone https://github.com/GKRBROS/Project-management-dashboard.git
 ```
 
-2. Install dependencies:
+2. Navigate to the project directory:
+```bash
+cd Project-management-dashboard
+```
+
+3. Install dependencies:
 ```bash
 npm install
 # or
 yarn install
 ```
 
-3. Create a `.env.local` file in the root directory and add any necessary environment variables:
+4. Create a `.env` file in the root directory (if needed):
 ```env
-# Add your environment variables here
+# Add any environment variables here
 ```
 
-4. Run the development server:
+5. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Project Structure
+### Building for Production
 
-```
-project-management-dashboard/
-├── app/
-│   ├── components/     # Reusable components
-│   ├── projects/       # Project-related pages
-│   ├── types/         # TypeScript type definitions
-│   └── layout.tsx     # Root layout
-├── public/
-│   └── images/        # Static images
-├── styles/            # Global styles
-└── README.md
-```
+To create a production build:
 
-## Deployment
-
-### Deploying to Vercel
-
-1. Push your code to GitHub
-2. Go to [Vercel](https://vercel.com)
-3. Import your GitHub repository
-4. Configure your project settings
-5. Deploy!
-
-### Manual Deployment
-
-1. Build the project:
 ```bash
 npm run build
 # or
 yarn build
 ```
 
-2. Start the production server:
+To start the production server:
+
 ```bash
 npm start
 # or
 yarn start
 ```
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js app directory
+│   ├── projects/          # Projects pages
+│   ├── contractors/       # Contractors page
+│   ├── explore/          # Explore page
+│   └── users/            # Users page
+├── components/            # Reusable components
+├── data/                 # Static data and mock data
+├── types/                # TypeScript type definitions
+└── utils/                # Utility functions
+```
+
+## Features in Detail
+
+### Projects Page
+- List view of all projects
+- Search functionality
+- Status filtering
+- Pagination
+- Project details view
+
+### Project Details
+- Comprehensive project information
+- Status tracking
+- Venue details
+- Timeline information
+
+### Navigation
+- Sidebar navigation
+- Mobile-responsive menu
+- Quick access to all sections
 
 ## Contributing
 
@@ -108,13 +125,13 @@ yarn start
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
 - Next.js team for the amazing framework
 - Tailwind CSS for the utility-first CSS framework
-- All contributors and maintainers
+- All contributors who have helped with the project
 
 ## Support
 
