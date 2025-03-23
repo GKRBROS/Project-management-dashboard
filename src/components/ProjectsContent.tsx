@@ -14,7 +14,7 @@ const mockProjects: Project[] = [
     name: 'Skyline Industries stand at Industry Showcase 2023',
     startDate: '2023-06-15',
     endDate: '2023-06-20',
-    status: 'In Progress',
+    status: 'In progress',
     venue: {
       name: 'Convention Center',
       city: 'Dubai',
