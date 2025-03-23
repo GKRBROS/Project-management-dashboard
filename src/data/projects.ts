@@ -159,7 +159,7 @@ export const projects: Project[] = [
     name: 'NexGen Systems stand at NextGen Exhibition 2021',
     startDate: '2021-04-11',
     endDate: '2021-04-19',
-    status: 'Admin Approved',
+    status: 'Project Confirmed',
     venue: {
       name: 'Trade Fair Arena C',
       city: 'Singapore',
@@ -210,7 +210,7 @@ export const projects: Project[] = [
     name: 'Innova Ltd stand at Innovation Fair 2020',
     startDate: '2020-02-08',
     endDate: '2020-02-17',
-    status: 'Admin Approved',
+    status: 'Project Confirmed',
     venue: {
       name: 'Convention Center A',
       city: 'Dubai',

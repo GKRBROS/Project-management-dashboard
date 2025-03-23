@@ -22,7 +22,7 @@ const mockProjects: Project[] = [
       hallNumber: '01',
       standNumber: '10'
     },
-    totalArea: '100 sq. mtr',
+    totalArea: 100,
     logo: '/images/skyline-logo.png',
     images: ['/images/stand1.png', '/images/stand2.png', '/images/stand3.png']
   },
@@ -100,7 +100,7 @@ function ProjectsContentInner() {
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-8 mb-6 sm:mb-8">
         <h1 className="text-xl sm:text-2xl font-semibold">Projects</h1>
         <div className="w-full sm:w-auto">
-          <SearchBar value={searchQuery} onChange={handleSearch} />
+          <SearchBar onSearch={handleSearch} placeholder="Search projects..." />
         </div>
       </div>
       
